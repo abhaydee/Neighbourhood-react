@@ -9,7 +9,7 @@ class GoogleMaps extends Component{
 
 	state={
 		isopen:false,
-		sidebaropen:true
+		sidebaropen:false
 	}
 
 	onclicksidebaropen=(e)=>{
@@ -80,16 +80,31 @@ class GoogleMaps extends Component{
 			{
 				<Sidebar
 			 		sidebar={
-					 <h1>Sidebar-contents</h1>
+						<div>
+							<input type="text" placeholder="enter the location"></input>
+							<button>Filter</button>
+						{	
+						
+							this.locations.map((location,i)=>{
+							return 	<ul>
+									<li>
+											{this.locations[i].title}
+									</li>
+								</ul>
+
+								})
+						}
+							
+						</div>
 					 
 					 }
 					 open={this.state.sidebaropen}
 					 onSetOpen={this.onclicksidebaropen}
-					 styles={{sidebar:{background:'white',color:'black',}}}
+					 styles={{sidebar:{background:'black',color:'white',}}}
 			 	>
-				 <button onClick={()=>this.onclicksidebaropen(true)}>
+				 <a  className="btn-floating btn-large waves-effect waves-light red"  onClick={()=>this.onclicksidebaropen(true)} style={{position:'absolute',top:'10px',left:'5px'}} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-black">
 					 Open Sidebar
-				 </button>
+				 </a>
 			 </Sidebar>
 				
 				
