@@ -4,7 +4,7 @@ import './App.css'
 import {withGoogleMap,GoogleMap,InfoWindow} from 'react-google-maps'
 import {Marker} from 'react-google-maps'
 import Sidebar from "react-sidebar";
-
+import {  Button } from 'react-materialize';
 class GoogleMaps extends Component{
 
 	state={
@@ -81,8 +81,9 @@ class GoogleMaps extends Component{
 				<Sidebar
 			 		sidebar={
 						<div>
-							<input type="text" placeholder="enter the location"></input>
-							<button>Filter</button>
+								<h1>Map-Locations</h1>
+							<input type="text" placeholder="enter the location"  className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-white"  style={{color:'black'}}></input>
+							<button className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-black">Filter</button>
 						{	
 						
 							this.locations.map((location,i)=>{
@@ -102,9 +103,9 @@ class GoogleMaps extends Component{
 					 onSetOpen={this.onclicksidebaropen}
 					 styles={{sidebar:{background:'black',color:'white',}}}
 			 	>
-				 <a  className="btn-floating btn-large waves-effect waves-light red"  onClick={()=>this.onclicksidebaropen(true)} style={{position:'absolute',top:'10px',left:'5px'}} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-black">
+				 <button    onClick={()=>this.onclicksidebaropen(true)} style={{position:'absolute',top:'5px',left:'1000px'}} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-black">
 					 Open Sidebar
-				 </a>
+				 </button>
 			 </Sidebar>
 				
 				
