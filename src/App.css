@@ -407,3 +407,23 @@
   opacity: .8;
   transition: opacity .15s ease-out;
 }
+
+@media screen and (min-width:800px) and (max-width: 1200px) {
+    .abcd{
+      width:50%;
+    }
+}
+
+
+
+@media screen and (min-width:500px) and (max-width: 800px) {
+  .abcd{
+    width:50%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .abcd{
+    width:50%;
+  }
+}
