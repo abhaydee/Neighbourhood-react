@@ -1,15 +1,47 @@
 import React,{Component} from 'react'
 import './App.css'
-
+import escapeRegExp from 'escape-string-regexp'
 import {withGoogleMap,GoogleMap,InfoWindow} from 'react-google-maps'
 import {Marker} from 'react-google-maps'
 import Sidebar from "react-sidebar";
-import {  Button } from 'react-materialize';
+
+
 class GoogleMaps extends Component{
 
 	state={
-		isopen:false,
-		sidebaropen:false
+		isopen:true,
+		sidebaropen:false,
+		query:''
+	
+	}
+	showingtitles=[
+
+	]
+
+	updatequery=(query) =>{
+		this.setState({query:query})
+		this.searchingtitles(query)
+	}
+
+	searchingtitles=(query)=>{
+		if(query){
+			if(this.state.query.error){
+				this.setState({query:[]})
+			}
+			else{
+
+				const match=new RegExp(escapeRegExp(query),'i')
+				this.showingtitles=this.locations.filter((location1)=>match.test(location1.title))
+				console.log(this.showingtitles)
+			}
+		}
+		else{
+			this.setState({query:[]})
+		}
+	}
+	
+	clearquery=()=>{
+		this.setState({query:''})
 	}
 
 	onclicksidebaropen=(e)=>{
@@ -42,8 +74,18 @@ class GoogleMaps extends Component{
 	
 
 	render(){
-
-	
+		
+	{/*let titles
+		if(this.state.query){
+			const match=new RegExp(escapeRegExp(this.state.query),'i')
+			titles=this.locations.filter((location1)=>match.test(location1.name))
+		}
+		else{
+			titles=titles
+		}
+		 */}	
+		
+	 
 		const Googlemapexample=withGoogleMap(props=>(
             <div>
 			<GoogleMap
@@ -52,24 +94,11 @@ class GoogleMaps extends Component{
 				</GoogleMap>
 				
 			 		{this.locations.map((location,i)=>{
-				console.log(location);
+				//console.log(location);
 				return (
-				<div>	
-				<Marker onClick={this.handletoggleopen}
-			  	title = { this.locations[i].title }
-			 		
-				position = { this.locations[i].location}
-			
-		       
-				
-			 />
-			 { this.state.isopen&&
-				<InfoWindow onCloseClick={this.handletoggleclose}
-				  position={ this.locations[i].location}
-				 >
-			      <h1>{this.locations[i].title}</h1>
-		        </InfoWindow>
-			 }
+				<div>
+
+
 			 
 			 	
 			 
@@ -82,14 +111,34 @@ class GoogleMaps extends Component{
 			 		sidebar={
 						<div>
 								<h1>Map-Locations</h1>
-							<input type="text" placeholder="enter the location"  className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-white"  style={{color:'black'}}></input>
+							<input type="text" placeholder="enter the location" value={this.state.query}
+								onChange={(event) => this.updatequery(event.target.value)}
+							  className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-white"  style={{color:'black'}}></input>
+							
 							<button className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-black">Filter</button>
 						{	
 						
-							this.locations.map((location,i)=>{
+							this.showingtitles.map((Locations,i)=>{
 							return 	<ul>
 									<li>
-											{this.locations[i].title}
+											{this.showingtitles[i].title}
+										{this.state.isopen&&
+											<Marker onClick={this.handletoggleopen}
+												title = { this.showingtitles[i].title }
+
+												position = { this.showingtitles[i].location}
+
+
+
+										/>}
+										{ this.state.isopen&&
+										<InfoWindow onCloseClick={this.handletoggleclose}
+													position={ this.showingtitles[i].location}
+										>
+											<h1>{this.showingtitles[i].title}</h1>
+										</InfoWindow>
+										}
+
 									</li>
 								</ul>
 
@@ -106,6 +155,7 @@ class GoogleMaps extends Component{
 				 <button    onClick={()=>this.onclicksidebaropen(true)} style={{position:'absolute',top:'5px',left:'1000px'}} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-black">
 					 Open Sidebar
 				 </button>
+
 			 </Sidebar>
 				
 				
