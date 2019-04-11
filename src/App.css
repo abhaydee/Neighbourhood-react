@@ -427,3 +427,23 @@
     width:50%;
   }
 }
+#sidenav {     background: black;     width:20%;     height: 2000px;     font-size: 70%;     margin-top: -80px;     z-index: 100; }
+
+.btn {
+
+  background-color: black;
+  color: white;
+  font-size: 100%;
+  text-align: center;
+
+}
+
+.btn1
+{
+  background-color: black;
+  color: white;
+  font-size: 100%;
+  text-align: center;
+  border:none;
+
+}

@@ -8,11 +8,13 @@ import {Marker} from 'react-google-maps';
 import Sidebar from "react-sidebar";
 import Navbar from "react-bootstrap/Navbar"
 
+
+
 class Gmaps extends Component {
     constructor( props ){
         super( props );
-        this.handletoggleopen = this.handletoggleopen.bind(this);
-        this.handletoggleclose=this.handletoggleclose.bind(this)
+        this.onToggleOpen= this.onToggleOpen.bind(this);
+
     }
 
     locations =[
@@ -23,7 +25,7 @@ class Gmaps extends Component {
         {title: 'Vidhana Sowdha', location: {lat: 12.9779, lng: 77.5896}},
          {title: 'Amith mane', location: {lat: 	12.9166, lng: 77.6101}},
         
-        
+
         
         
     ];
@@ -31,11 +33,15 @@ class Gmaps extends Component {
 
     state = {
         isopen:false,
+        istrue:false,
         sidebaropen:false,
         query:' ',
         showingInfoWindow: false,
         activeMarker: {},
         selectedPlace: {}
+    };
+    onToggleOpen =() =>{
+        this.setState({istrue:true})
     };
     onMarkerClick = (props, marker, e) =>
 
@@ -58,7 +64,7 @@ class Gmaps extends Component {
     onclicksidebaropen=(e)=>{
         this.setState({sidebaropen:e})
     };
-    handletoggleopen=(e)=>{
+    handletoggleopen=()=>{
         this.setState({isopen:true});
 
     };
@@ -70,7 +76,7 @@ class Gmaps extends Component {
      ];
 
     render() {
-        console.log(this.state.isopen);
+        console.log(this.state.istrue);
         const { query } = this.state;
 
 
@@ -112,46 +118,80 @@ class Gmaps extends Component {
                     )
                 })
                 }
+                    {
+                        this.showingtitles.map((location,i)=>{
+                            return  <Marker onClick={this.handletoggleopen}
+                                            title = { this.showingtitles[i].title }
+
+                                            position = { this.showingtitles[i].location}
+
+
+
+                            >
+
+                                {this.state.isopen && <InfoWindow onCloseClick={this.handletoggleclose}>
+                                    <div>
+                                        <p>Hello world</p>
+                                    </div>
+                                </InfoWindow>}
+
+
+                            </Marker>
+                        })
+                    }
+
+
+
+
+
+
+                </GoogleMap>
+
+            </div>
+
+        ));
+
+
+        return (
+            <div className="renderingmaps">
+                <Googlemapexample containerElement={ <div style={{height: `800px`, width: '100%'}} />}
+                                  mapElement={<div style={{height: `100%`}} />}
+                />
                 {
                     <Sidebar className="abcd"
-                        sidebar={
-                            <div>
-                                <h1>Map-Locations</h1>
-                                <input type="text" placeholder="enter the location" value={this.state.query}
-                                       onChange={(event) => this.updateQuery(event.target.value)}
-                                       className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-white"  style={{color:'black'}}/>
+                             sidebar={
+                                 <div>
+                                     <h1>Map-Locations</h1>
+                                     <input type="text" placeholder="enter the location" value={this.state.query}
+                                            onChange={(event) => this.updateQuery(event.target.value)}
+                                            className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-white"  style={{color:'black'}}/>
 
 
 
 
-                                {
+                                     {
 
-                                    this.showingtitles.map((location,i)=>{
-                                        return 	<ul>
-                                            <li>
+                                         this.showingtitles.map((location,i)=>{
+                                             return 	<ul>
+                                                 <li>
 
-                                                <button class="f6 link dim br3 ph3 pv2 mb2 dib white bg-mid-gray"> { this.showingtitles[i].title}</button>
-                                                {
-
-
-                                                }
-                                                {
-                                                }
-
-                                            </li>
-                                        </ul>
-
-                                    })
-                                }
-
-                            </div>
-
-                        }
+                                                     <button class="f6 link dim br3 ph3 pv2 mb2 dib white bg-mid-gray"> { this.showingtitles[i].title}</button>
+                                                     {
 
 
+                                                     }
+                                                     {
+                                                     }
 
+                                                 </li>
+                                             </ul>
 
+                                         })
+                                     }
 
+                                 </div>
+
+                             }
 
 
 
@@ -159,14 +199,19 @@ class Gmaps extends Component {
 
 
 
-                        open={this.state.sidebaropen}
-                        onSetOpen={this.onclicksidebaropen}
-                        styles={{sidebar:{background:'black',color:'white'}}}
+
+
+
+
+
+                             open={this.state.sidebaropen}
+                             onSetOpen={this.onclicksidebaropen}
+                             styles={{sidebar:{background:'black',color:'white'}}}
                     >
                         <Navbar expand="lg"  bg="dark">
-                        <button    onClick={()=>this.onclicksidebaropen(true)} style={{position:'absolute',top:'5px',left:'10px'}} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-black">
-                            Open Sidebar
-                        </button>
+                            <button    onClick={()=>this.onclicksidebaropen(true)} style={{position:'absolute',top:'5px',left:'10px'}} className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-near-black">
+                                Open Sidebar
+                            </button>
                             <Navbar.Brand href="#" id="nav">Map</Navbar.Brand>
                         </Navbar>
                     </Sidebar>
@@ -177,42 +222,10 @@ class Gmaps extends Component {
 
                 }
 
-                    {
-                        this.showingtitles.map((location,i)=>{
-                           return  <Marker onClick={ this.handletoggleopen}
-                                    title = { this.showingtitles[i].title }
 
-                                    position = { this.showingtitles[i].location}
-
-
-
-                            />
-                        })
-                    }
-                    {this.state.showingInfoWindow &&
-                    <InfoWindow
-                        marker={this.state.activeMarker}
-                        visible={this.state.showingInfoWindow}>
-                        <div>
-                            <h1>{this.state.selectedPlace.title}</h1>
-                        </div>
-                    </InfoWindow>
-                    }
-
-
-
-                </GoogleMap>
-            </div>
-        ));
-
-
-        return (
-            <div className="renderingmaps">
-                <Googlemapexample containerElement={ <div style={{height: `800px`, width: '100%'}} />}
-                                  mapElement={<div style={{height: `100%`}} />}
-                />
 
             </div>
+
         )
        
     }
